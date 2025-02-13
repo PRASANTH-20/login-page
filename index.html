@@ -20,7 +20,7 @@
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 400px;
+      width: 300px;
       text-align: center;
     }
     h2 {
@@ -76,9 +76,32 @@
     .social-login button:hover {
       background-color: #f9f9f9;
     }
+
+    /* Toast Message Styles */
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 4px;
+      font-size: 14px;
+      color: white;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    #toast.success {
+      background-color: #28a745; /* Green for success */
+    }
+    #toast.error {
+      background-color: #dc3545; /* Red for error */
+    }
   </style>
 </head>
 <body>
+  <!-- Toast Message -->
+  <div id="toast"></div>
+
   <!-- Login Screen -->
   <div id="login-screen" class="container">
     <h2>LOGIN</h2>
@@ -137,15 +160,29 @@
       document.getElementById('login-screen').style.display = 'block';
     }
 
+    // Show Toast Message
+    function showToast(message, type) {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.className = type; // Add 'success' or 'error' class
+      toast.style.display = 'block';
+
+      // Hide the toast after 3 seconds
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3000);
+    }
+
     // Validate Login Inputs
     function validateLogin() {
       const email = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
-      let isValid = true;
 
       // Reset error messages
       document.getElementById('login-email-error').innerText = '';
       document.getElementById('login-password-error').innerText = '';
+
+      let isValid = true;
 
       // Email validation
       if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
@@ -159,8 +196,13 @@
         isValid = false;
       }
 
+      // Simulate backend validation for email and password
       if (isValid) {
-        alert('Login successful!');
+        if (email === "abc@gmail.com" && password === "password123") {
+          showToast("✅ Login Successful!", "success");
+        } else {
+          showToast("❌ Incorrect email or password.", "error");
+        }
       }
     }
 
@@ -170,13 +212,14 @@
       const email = document.getElementById('signup-email').value;
       const password = document.getElementById('signup-password').value;
       const confirmPassword = document.getElementById('signup-confirm-password').value;
-      let isValid = true;
 
       // Reset error messages
       document.getElementById('signup-fullname-error').innerText = '';
       document.getElementById('signup-email-error').innerText = '';
       document.getElementById('signup-password-error').innerText = '';
       document.getElementById('signup-confirm-password-error').innerText = '';
+
+      let isValid = true;
 
       // Full Name validation
       if (!fullname.match(/^[a-zA-Z\s]+$/)) {
@@ -202,8 +245,9 @@
         isValid = false;
       }
 
+      // Simulate successful signup
       if (isValid) {
-        alert('Signup successful!');
+        showToast("✅ Signup Successful!", "success");
       }
     }
   </script>
